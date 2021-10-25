@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HBase connector</title>
+    </head>
+    <body>
+
+        <p style="text-align: center;"><img
+                src="https://d1.awsstatic.com/product-marketing/EMR/hbase-logo.e139b77f7031062f738f0fc28210e0ffa6ca26c8.png"
+                alt="HBase" width="164" height="109" /><strong>Apache HBase
+                Connectors &ndash; the bridge between Spark and HBase</strong></p>
+        <p>&nbsp;&nbsp;It is very often that we need to consume data from HBase
+            with Spark. Particularly, in a use case of data integration with
+            multiple data sources including HBase, Spark heavily replies on
+            TableInputFormat to fetch HBase data. However, doing so faces
+            challenges in</p>
+        <ul>
+            <li>1) one task only initializing one scan,</li>
+            <li>2)BulkGet not supported in TableInputFormat and</li>
+            <li>3) catalyst not friendly with such HBase query.</li>
+        </ul>
+        <p>&nbsp;</p>
+        <p>To solve this issue,&nbsp; we need to use Apache HBase Connector(<a
+                href="https://github.com/apache/hbase-connectors">https://github.com/apache/hbase-connectors</a>),
+            aka, SHC.&nbsp; Thanks to this library, Spark SQL can
+            &ldquo;talk&rdquo; directly to HBase. For example, Spark SQL can
+            work on data query in HBase with the catalyst engine in partition
+            pruning, column pruning or predicate pushdown and data locality.
+            Therefore the performance of Spark SQL is significantly boosted.</p>
+        <p>&nbsp;</p>
+        <p>How it works: SHC uses the following three strategies to improve
+            Spark SQL performance on HBase.&nbsp;</p>
+        <p><strong>Converting Rowkey query into get query: </strong>&nbsp;As we
+            know, get query is the best choice on HBase. So getting most out of
+            this type of query is the key to achieve better query
+            efficiency.&nbsp;</p>
+        <p><strong>Combination of Rowkey:</strong>&nbsp;This is another
+            important feature of SHC. My personal understanding is that it works
+            similar to the use of complex unique key on a SQL database.&nbsp;</p>
+        <p><strong>Scan optimizing:</strong>&nbsp; when there are &gt; or &lt;
+            filtering conditions, SHC automatically runs two queries: get +
+            scan. Thus it can avoid full table scanning.</p>
+        <p> <img
+                src="https://dwgeek.com/wp-content/uploads/2019/01/Spark-SQL-Performance-Tuning.jpg"
+                alt="HBase" width="164" height="109" />
+        </p>
+        <p>&nbsp;</p>
+
+
+    </body>
+</html>
